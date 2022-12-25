@@ -1,3 +1,6 @@
+/*Bibliotecas-----------------------------------------------------------------*/
+#include <NewPing.h>
+
 /* Private macro -------------------------------------------------------------*/
 //#define TRIG_SR04 ( __HAL_TIM_SET_COUNTER(&htim5, 0xFFFFFFF5) )
 
@@ -62,6 +65,8 @@ uint16_t distanciaEco = 0; //distancia en cm.
 int16_t encoderL;
 int16_t encoderR;
 
+//HC-SR04//
+NewPing sonar(OUT_TRIG_ULTRASONIDO, IN_ECO_ULTRASONIDO, 200); // parametros: salida, entrada, distancia en cm.
 
 /* Private function prototypes -----------------------------------------------*/
 void SR_04 (void);
@@ -74,28 +79,28 @@ void prueba03 (void);
 void prueba04 (void);
 
 void setup() {
-  Serial.begin(9600);   //iniciar puerto serie
+  Serial.begin(115200);   //iniciar puerto serie
   
   //pinMode(sensorPin , INPUT_PULLUP);  
   pinMode(IN_BUMP_L , INPUT);
   pinMode(IN_BUMP_R , INPUT);
   pinMode(IN_IR_L , INPUT);
   pinMode(IN_IR_R , INPUT);
-  pinMode(IN_ECO_ULTRASONIDO, INPUT);
+  //pinMode(IN_ECO_ULTRASONIDO, INPUT);
   //pinMode(sensorPin , INPUT_PULLUP);
   
   pinMode(OUT_PWM_L1 , OUTPUT);
   pinMode(OUT_PWM_L2 , OUTPUT);
   pinMode(OUT_PWM_R1 , OUTPUT);
   pinMode(OUT_PWM_R2 , OUTPUT);
-  pinMode(OUT_TRIG_ULTRASONIDO , OUTPUT);
+  //pinMode(OUT_TRIG_ULTRASONIDO , OUTPUT);
   //pinMode(sensorPin , OUTPUT);
-  
+    
 }
  
 void loop(){
 
-	//Serial.print ("hola");
+	//Serial.println ("hola");
 	prueba04();
 
 	  //movimiento();
@@ -348,19 +353,21 @@ void prueba03 (void){
 void prueba04 (void){
 	
 	uint32_t pulsos;
-	
+	/*
 	digitalWrite(OUT_TRIG_ULTRASONIDO, LOW);  //para generar un pulso limpio ponemos a LOW 4us
 	delayMicroseconds(4);
 	digitalWrite(OUT_TRIG_ULTRASONIDO, HIGH);  //generamos Trigger (disparo) de 10us
 	delayMicroseconds(10);
 	digitalWrite(OUT_TRIG_ULTRASONIDO, LOW);
+	//Serial.println("disparo el pulso");
 	
 	//pulsos = pulseIn(IN_ECO_ULTRASONIDO, LOW, 14600);  //medimos el tiempo entre pulsos, en microsegundos. TIMEOUT : 14600 us == 250 cm   
 	pulsos = pulseIn(IN_ECO_ULTRASONIDO, LOW);  //medimos el tiempo entre pulsos, SIN TIMEOUT
 	distanciaEco = pulsos * 10 / 292/ 2;
+	*/
    
 	Serial.print("Distancia: ");
-	Serial.println(distanciaEco);
+	Serial.println(sonar.ping_cm());
 	delay(500) ;
 	
 } //fin prueba04 ()
